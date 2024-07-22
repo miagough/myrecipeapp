@@ -5,4 +5,5 @@
     <string name="button_addRecipe">Add Recipe</string>
     <string name="hint_recipeTitle">Recipe Title</string>
     <string name="hint_recipeDescription">Description </string>
+    <string name="menu_addRecipe">Add</string>
 </resources>
