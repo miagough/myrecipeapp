@@ -2,6 +2,8 @@ package ie.setu.recipeapp.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.material.snackbar.Snackbar
 import ie.setu.recipeapp.R
@@ -24,6 +26,11 @@ class RecipeActivity : AppCompatActivity() {
         binding = ActivityRecipeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding = ActivityRecipeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.topAppBar.title = title
+        setSupportActionBar(binding.topAppBar)
 
 
         binding.toggleButton.setOnCheckedChangeListener { _, isChecked ->
@@ -34,17 +41,19 @@ class RecipeActivity : AppCompatActivity() {
             }
         }
 
+        if (intent.hasExtra("recipe_edit")) {
+            recipe = intent.extras?.getParcelable("recipe_edit")!!
+            binding.recipeTitle.setText(recipe.title)
+            binding.recipeDescription.setText(recipe.description)
+        }
+
         app = application as MainApp
         i("Recipe Activity started...")
         binding.btnAdd.setOnClickListener() {
             recipe.title = binding.recipeTitle.text.toString()
             recipe.description = binding.recipeDescription.text.toString()
             if (recipe.title.isNotEmpty()) {
-                app.recipes.add(recipe.copy())
-                i("add Button Pressed: ${recipe}")
-                for (i in app.recipes.indices) {
-                    i("Recipe[$i]:${this.app.recipes[i]}")
-                }
+                app.recipes.create(recipe.copy())
                 setResult(RESULT_OK)
                 finish()
             }
@@ -53,6 +62,21 @@ class RecipeActivity : AppCompatActivity() {
                     .show()
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_recipe, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.item_cancel -> {
+                setResult(RESULT_CANCELED)
+                finish()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 }
