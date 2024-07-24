@@ -23,6 +23,7 @@ class RecipeMemStore : RecipeStore {
         if (foundRecipe != null) {
             foundRecipe.title = recipe.title
             foundRecipe.description = recipe.description
+            foundRecipe.image = recipe.image
             logAll()
         }
     }

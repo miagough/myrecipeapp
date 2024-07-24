@@ -3,6 +3,7 @@ package ie.setu.recipeapp.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import ie.setu.recipeapp.databinding.CardRecipeBinding
 import ie.setu.recipeapp.models.RecipeModel
 
@@ -33,6 +34,7 @@ class RecipeAdapter constructor(private var recipes: List<RecipeModel>,
         fun bind(recipe: RecipeModel, listener: RecipeListener) {
             binding.recipeTitle.text = recipe.title
             binding.recipeDescription.text = recipe.description
+            Picasso.get().load(recipe.image).resize(200,200).into(binding.imageIcon)
             binding.root.setOnClickListener { listener.onRecipeClick(recipe)}
         }
     }
