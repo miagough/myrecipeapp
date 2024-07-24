@@ -7,6 +7,8 @@ This project provides the user with an android mobile recipe app.
 This project allows the user to:
 - Add a recipe title and description
 - Update a recipe title and description
+- Add an image to a recipe
+- Update a recipe image
 - Toggle between light and dark mode
 
 ## Getting Started
