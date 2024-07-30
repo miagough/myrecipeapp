@@ -20,6 +20,7 @@ class RecipeListActivity : AppCompatActivity(), RecipeListener {
 
     lateinit var app: MainApp
     private lateinit var binding: ActivityRecipeListBinding
+    private var position: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,18 +54,24 @@ class RecipeListActivity : AppCompatActivity(), RecipeListener {
         registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) {
-            if (it.resultCode == Activity.RESULT_OK) {
-                (binding.recyclerView.adapter)?.
-                notifyItemRangeChanged(0,app.recipes.findAll().size)
-            }
-            if (it.resultCode == Activity.RESULT_CANCELED) {
-                Snackbar.make(binding.root, "Recipe Add Cancelled", Snackbar.LENGTH_LONG).show()
+            when(it.resultCode) {
+                Activity.RESULT_OK ->
+                    (binding.recyclerView.adapter)?.notifyItemRangeChanged(
+                        0,
+                        app.recipes.findAll().size)
+                Activity.RESULT_CANCELED ->
+                    Snackbar.make(
+                        binding.root,
+                        getString(R.string.recipe_add_cancelled), Snackbar.LENGTH_LONG).show()
+                99 ->
+                    (binding.recyclerView.adapter)?.notifyItemRemoved(position)
             }
         }
 
-    override fun onRecipeClick(recipe: RecipeModel) {
+    override fun onRecipeClick(recipe: RecipeModel, pos : Int) {
         val launcherIntent = Intent(this, RecipeActivity::class.java)
         launcherIntent.putExtra("recipe_edit", recipe)
+        position = pos
         getResult.launch(launcherIntent)
     }
 }

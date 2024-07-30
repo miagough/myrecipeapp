@@ -9,7 +9,7 @@ import ie.setu.recipeapp.models.RecipeModel
 
 
 interface RecipeListener {
-    fun onRecipeClick(recipe: RecipeModel)
+    fun onRecipeClick(recipe: RecipeModel, position : Int)
 }
 class RecipeAdapter constructor(private var recipes: List<RecipeModel>,
                                    private val listener: RecipeListener) :
@@ -35,7 +35,7 @@ class RecipeAdapter constructor(private var recipes: List<RecipeModel>,
             binding.recipeTitle.text = recipe.title
             binding.recipeDescription.text = recipe.description
             Picasso.get().load(recipe.image).resize(200,200).into(binding.imageIcon)
-            binding.root.setOnClickListener { listener.onRecipeClick(recipe) }
+            binding.root.setOnClickListener { listener.onRecipeClick(recipe,adapterPosition) }
         }
     }
 }
