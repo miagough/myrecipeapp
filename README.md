@@ -11,6 +11,7 @@ This project allows the user to:
 - Update a recipe image
 - Add a location to a recipe using Google Maps
 - Toggle between light and dark mode
+- Delete a recipe
 
 ## Getting Started
 This project is only available for Android and is made using Kotlin. To use this you must have an android device and kotlin installed on your machine in order to access it.
