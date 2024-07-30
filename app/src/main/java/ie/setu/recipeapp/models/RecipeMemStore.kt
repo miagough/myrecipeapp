@@ -24,6 +24,9 @@ class RecipeMemStore : RecipeStore {
             foundRecipe.title = recipe.title
             foundRecipe.description = recipe.description
             foundRecipe.image = recipe.image
+            foundRecipe.lat = recipe.lat
+            foundRecipe.lng = recipe.lng
+            foundRecipe.zoom = recipe.zoom
             logAll()
         }
     }
