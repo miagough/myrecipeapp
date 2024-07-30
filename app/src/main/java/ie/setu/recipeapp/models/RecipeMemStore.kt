@@ -34,6 +34,10 @@ class RecipeMemStore : RecipeStore {
     override fun delete(recipe: RecipeModel) {
         recipes.remove(recipe)
     }
+    override fun findById(id:Long) : RecipeModel? {
+        val foundRecipe: RecipeModel? = recipes.find { it.id == id }
+        return foundRecipe
+    }
 
     fun logAll() {
         recipes.forEach{ i("${it}") }

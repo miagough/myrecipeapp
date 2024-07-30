@@ -60,6 +60,11 @@ class RecipeJSONStore(private val context: Context) : RecipeStore {
         serialize()
     }
 
+    override fun findById(id:Long) : RecipeModel? {
+        val foundRecipe: RecipeModel? = recipes.find { it.id == id }
+        return foundRecipe
+    }
+
     private fun serialize() {
         val jsonString = gsonBuilder.toJson(recipes, listType)
         write(context, JSON_FILE, jsonString)
