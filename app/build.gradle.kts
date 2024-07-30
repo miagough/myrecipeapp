@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-parcelize")
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -14,6 +15,7 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -50,6 +52,7 @@ dependencies {
     implementation ("org.slf4j:slf4j-simple:1.7.36")
     implementation ("io.github.microutils:kotlin-logging:2.1.23")
     implementation ("com.squareup.picasso:picasso:2.71828")
+    implementation("com.google.android.gms:play-services-maps:18.1.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

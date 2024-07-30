@@ -15,33 +15,27 @@ import ie.setu.recipeapp.R
 import ie.setu.recipeapp.databinding.ActivityRecipeBinding
 import ie.setu.recipeapp.helpers.showImagePicker
 import ie.setu.recipeapp.main.MainApp
+import ie.setu.recipeapp.models.Location
 import ie.setu.recipeapp.models.RecipeModel
-import timber.log.Timber
 import timber.log.Timber.i
 
 class RecipeActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityRecipeBinding
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
+    private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
     var recipe = RecipeModel()
-    lateinit var app : MainApp
-    var edit = false
+    lateinit var app: MainApp
 
+    //var location = Location(52.245696, -7.139102, 15f)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_recipe)
-
-        binding = ActivityRecipeBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
         binding = ActivityRecipeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.topAppBar.title = title
         setSupportActionBar(binding.topAppBar)
-
-
 
         binding.toggleButton.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
@@ -51,50 +45,71 @@ class RecipeActivity : AppCompatActivity() {
             }
         }
 
+
+        app = application as MainApp
+        var edit = false
+
+        i(getString(R.string.recipe_activity_started))
+
         if (intent.hasExtra("recipe_edit")) {
             edit = true
             recipe = intent.extras?.getParcelable("recipe_edit")!!
             binding.recipeTitle.setText(recipe.title)
             binding.recipeDescription.setText(recipe.description)
-            binding.btnAdd.setText(R.string.save_recipe)
+            binding.btnAdd.text = getString(R.string.save_recipe)
             Picasso.get()
                 .load(recipe.image)
                 .into(binding.recipeImage)
             if (recipe.image != Uri.EMPTY) {
                 binding.chooseImage.setText(R.string.change_recipe_image)
             }
+        }
 
-            binding.chooseImage.setOnClickListener {
-                i("Select image")
+        binding.chooseImage.setOnClickListener {
+            showImagePicker(imageIntentLauncher)
+        }
+        registerImagePickerCallback()
+
+        binding.recipeLocation.setOnClickListener {
+            val location = Location(52.245696, -7.139102, 15f)
+            if (recipe.zoom != 0f) {
+                location.lat =  recipe.lat
+                location.lng = recipe.lng
+                location.zoom = recipe.zoom
             }
+            val launcherIntent = Intent(this, MapActivity::class.java)
+                .putExtra("location", location)
+            mapIntentLauncher.launch(launcherIntent)
+        }
+        registerMapCallback()
 
-            app = application as MainApp
-            i("Recipe Activity started...")
-            binding.btnAdd.setOnClickListener() {
-                recipe.title = binding.recipeTitle.text.toString()
-                recipe.description = binding.recipeDescription.text.toString()
-                if (recipe.title.isNotEmpty()) {
-                    if (edit) {
-                        app.recipes.update(recipe.copy())
-                    } else {
-                        app.recipes.create(recipe.copy())
-                    }
-                    setResult(RESULT_OK)
-                    finish()
-                } else {
-                    Snackbar.make(
-                        it, getString(R.string.enter_recipe_title),
-                        Snackbar.LENGTH_LONG
-                    ).show()
+
+        binding.recipeLocation.setOnClickListener {
+            val location = Location(52.245696, -7.139102, 15f)
+            val launcherIntent = Intent(this, MapActivity::class.java)
+                .putExtra("location", location)
+            mapIntentLauncher.launch(launcherIntent)
+        }
+
+        binding.btnAdd.setOnClickListener() {
+            recipe.title = binding.recipeTitle.text.toString()
+            recipe.description = binding.recipeDescription.text.toString()
+            if (recipe.title.isNotEmpty()) {
+                if (edit) {
+                    app.recipes.update(recipe.copy())
                 }
+                else{
+                    app.recipes.create(recipe.copy())
+                }
+                setResult(RESULT_OK)
+                finish()
             }
-            binding.chooseImage.setOnClickListener {
-                showImagePicker(imageIntentLauncher)
+            else {
+                Snackbar.make(it, getString(R.string.enter_recipe_title),
+                    Snackbar.LENGTH_LONG).show()
             }
-            registerImagePickerCallback()
         }
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_recipe, menu)
@@ -124,11 +139,30 @@ class RecipeActivity : AppCompatActivity() {
                                 .load(recipe.image)
                                 .into(binding.recipeImage)
                             binding.chooseImage.setText(R.string.change_recipe_image)
-                        } // end of if
+                        }  // end of if
                     }
                     RESULT_CANCELED -> { } else -> { }
                 }
             }
     }
 
+    private fun registerMapCallback() {
+        mapIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { result ->
+                when (result.resultCode) {
+                    RESULT_OK -> {
+                        if (result.data != null) {
+                            i("Got Location ${result.data.toString()}")
+                            val location = result.data!!.extras?.getParcelable<Location>("location")!!
+                            i("Location == $location")
+                            recipe.lat = location.lat
+                            recipe.lng = location.lng
+                            recipe.zoom = location.zoom
+                        } // end of if
+                    }
+                    RESULT_CANCELED -> { } else -> { }
+                }
+            }
+    }
 }
