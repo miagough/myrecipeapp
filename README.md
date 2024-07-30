@@ -9,6 +9,7 @@ This project allows the user to:
 - Update a recipe title and description
 - Add an image to a recipe
 - Update a recipe image
+- Add a location to a recipe using Google Maps
 - Toggle between light and dark mode
 
 ## Getting Started
