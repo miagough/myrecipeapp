@@ -25,6 +25,7 @@ class RecipeActivity : AppCompatActivity() {
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
     var recipe = RecipeModel()
     lateinit var app: MainApp
+    var edit = false
 
     //var location = Location(52.245696, -7.139102, 15f)
 
@@ -47,7 +48,7 @@ class RecipeActivity : AppCompatActivity() {
 
 
         app = application as MainApp
-        var edit = false
+
 
         i(getString(R.string.recipe_activity_started))
 
@@ -66,7 +67,7 @@ class RecipeActivity : AppCompatActivity() {
         }
 
         binding.chooseImage.setOnClickListener {
-            showImagePicker(imageIntentLauncher)
+            showImagePicker(imageIntentLauncher,this)
         }
         registerImagePickerCallback()
 
@@ -113,13 +114,18 @@ class RecipeActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_recipe, menu)
+        if (edit) menu.getItem(1).isVisible = true
         return super.onCreateOptionsMenu(menu)
     }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.item_cancel -> {
                 setResult(RESULT_CANCELED)
+                finish()
+            }
+            R.id.item_delete -> {
+                app.recipes.delete(recipe)
+                setResult(99)
                 finish()
             }
         }
@@ -134,12 +140,17 @@ class RecipeActivity : AppCompatActivity() {
                     RESULT_OK -> {
                         if (result.data != null) {
                             i("Got Result ${result.data!!.data}")
-                            recipe.image = result.data!!.data!!
+
+                            val image = result.data!!.data!!
+                            contentResolver.takePersistableUriPermission(image,
+                                Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                            recipe.image = image
+
                             Picasso.get()
                                 .load(recipe.image)
                                 .into(binding.recipeImage)
                             binding.chooseImage.setText(R.string.change_recipe_image)
-                        }  // end of if
+                        } // end of if
                     }
                     RESULT_CANCELED -> { } else -> { }
                 }
