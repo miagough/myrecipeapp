@@ -17,6 +17,15 @@
         android:theme="@style/Theme.Recipe"
         tools:targetApi="31">
         <activity
+            android:name=".activities.SplashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".views.map.RecipeMapView"
             android:exported="false"
             android:theme="@style/Theme.Recipe" />
@@ -32,11 +41,6 @@
         <activity
             android:name=".views.recipeList.RecipeListView"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".views.recipe.RecipeView"

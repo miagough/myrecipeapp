@@ -2,6 +2,7 @@ package ie.setu.recipeapp.main
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
+import ie.setu.recipeapp.R
 import ie.setu.recipeapp.models.RecipeJSONStore
 import ie.setu.recipeapp.models.RecipeMemStore
 import ie.setu.recipeapp.models.RecipeModel
