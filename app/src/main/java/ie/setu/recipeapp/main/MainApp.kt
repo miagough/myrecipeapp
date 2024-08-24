@@ -6,6 +6,7 @@ import ie.setu.recipeapp.R
 import ie.setu.recipeapp.models.RecipeJSONStore
 import ie.setu.recipeapp.models.RecipeMemStore
 import ie.setu.recipeapp.models.RecipeModel
+import ie.setu.recipeapp.models.RecipeSQLStore
 import ie.setu.recipeapp.models.RecipeStore
 import timber.log.Timber
 import timber.log.Timber.i
