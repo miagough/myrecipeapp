@@ -38,4 +38,11 @@ class RecipeAdapter constructor(private var recipes: List<RecipeModel>,
             binding.root.setOnClickListener { listener.onRecipeClick(recipe,adapterPosition) }
         }
     }
+
+    fun updateItems(newRecipes: List<RecipeModel>) {
+        if (recipes.size != newRecipes.size) {
+            recipes = newRecipes
+            notifyItemRangeChanged(0, newRecipes.size)
+        }
+    }
 }

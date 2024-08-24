@@ -57,8 +57,9 @@ class RecipeListView : AppCompatActivity(), RecipeListener {
     }
 
     fun onRefresh() {
-        binding.recyclerView.adapter?.
-        notifyItemRangeChanged(0,presenter.getRecipes().size)
+        val recipeAdapter = binding.recyclerView.adapter as RecipeAdapter
+        // if the recipes in the store have been updated, refresh the adspter
+        recipeAdapter.updateItems(presenter.getRecipes())
     }
 
     fun onDelete(position : Int) {
