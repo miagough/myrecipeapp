@@ -51,6 +51,7 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Recipe" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimary">@color/md_theme_primary</item> -->
+
     </style>
 </resources>

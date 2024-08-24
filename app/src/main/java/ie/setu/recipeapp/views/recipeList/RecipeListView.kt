@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.recyclerview.widget.LinearLayoutManager
 import ie.setu.recipeapp.R
 import ie.setu.recipeapp.adapters.RecipeAdapter
@@ -25,12 +26,17 @@ class RecipeListView : AppCompatActivity(), RecipeListener {
         setContentView(binding.root)
         binding.topAppBar.title = title
         setSupportActionBar(binding.topAppBar)
+
+
         presenter = RecipeListPresenter(this)
         app = application as MainApp
+
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
         loadRecipes()
+
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
