@@ -10,6 +10,7 @@ This project allows the user to:
 - Add an image to a recipe
 - Update a recipe image
 - Add a location to a recipe using Google Maps
+- View all recipe locations at once on a map using Google Maps
 - Toggle between light and dark mode
 - Delete a recipe
 - Persistence with JSON
